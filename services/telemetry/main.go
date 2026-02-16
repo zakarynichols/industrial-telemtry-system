@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/gorilla/mux"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 
@@ -44,14 +45,15 @@ func main() {
 
 	alertService := processing.NewAlertService(pool, cfg)
 
-	mux := http.NewServeMux()
-	mux.HandleFunc("/health", healthHandler)
-	mux.HandleFunc("/api/v1/machines", machinesHandler(pool))
-	mux.HandleFunc("/api/v1/metrics", metricsHandler(pool))
-	mux.HandleFunc("/api/v1/metrics/ingest", ingestHandler(pool, alertService))
-	mux.HandleFunc("/api/v1/alerts", alertsHandler(pool))
-	mux.HandleFunc("/api/v1/rules", rulesHandler(pool))
-	mux.HandleFunc("/api/v1/anomalies", anomaliesHandler(pool))
+	router := mux.NewRouter()
+	router.HandleFunc("/health", healthHandler)
+	router.HandleFunc("/api/v1/machines", machinesHandler(pool))
+	router.HandleFunc("/api/v1/metrics", metricsHandler(pool))
+	router.HandleFunc("/api/v1/metrics/ingest", ingestHandler(pool, alertService))
+	router.HandleFunc("/api/v1/alerts", alertsHandler(pool))
+	router.HandleFunc("/api/v1/alerts/{id}/acknowledge", acknowledgeAlertHandler(pool))
+	router.HandleFunc("/api/v1/rules", rulesHandler(pool))
+	router.HandleFunc("/api/v1/anomalies", anomaliesHandler(pool))
 
 	go func() {
 		log.Printf("Starting MQTT server on :1883")
@@ -62,7 +64,7 @@ func main() {
 
 	server := &http.Server{
 		Addr:         ":8083",
-		Handler:      mux,
+		Handler:      router,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,
 	}
@@ -418,5 +420,36 @@ func anomaliesHandler(pool *pgxpool.Pool) http.HandlerFunc {
 			anomalies = []map[string]interface{}{}
 		}
 		json.NewEncoder(w).Encode(anomalies)
+	}
+}
+
+func acknowledgeAlertHandler(pool *pgxpool.Pool) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
+		vars := mux.Vars(r)
+		alertID := vars["id"]
+
+		if alertID == "" {
+			http.Error(w, "alert id required", http.StatusBadRequest)
+			return
+		}
+
+		alertUUID, err := uuid.Parse(alertID)
+		if err != nil {
+			http.Error(w, "invalid alert id", http.StatusBadRequest)
+			return
+		}
+
+		_, err = pool.Exec(r.Context(),
+			"UPDATE alerts SET acknowledged = true, acknowledged_at = NOW() WHERE id = $1",
+			alertUUID,
+		)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		json.NewEncoder(w).Encode(map[string]string{"status": "acknowledged"})
 	}
 }
