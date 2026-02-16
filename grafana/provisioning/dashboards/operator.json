@@ -49,11 +49,11 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT count(*) FROM machines WHERE status = 'active'",
+          "rawSql": "SELECT count(DISTINCT machine_id) FROM metrics WHERE time > now() - interval '5 minutes'",
           "refId": "A"
         }
       ],
-      "title": "🟢 Machines Online",
+      "title": "🟢 Active Machines",
       "type": "stat"
     },
     {
@@ -679,6 +679,20 @@
       ],
       "title": "📋 Machine Status Overview",
       "type": "table"
+    },
+    {
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 34},
+      "id": 999,
+      "options": {
+        "maxItems": 20,
+        "maxItemsInGroup": 5,
+        "nameSortOrder": "asc",
+        "showInstances": false,
+        "sortOrder": 1,
+        "stateFilter": {"firing": true, "pending": true}
+      },
+      "title": "🚨 Grafana Alerts",
+      "type": "alertlist"
     }
   ],
   "refresh": "5s",
