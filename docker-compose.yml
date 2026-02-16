@@ -25,10 +25,16 @@ services:
     container_name: telemetry-grafana
     environment:
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD}
+      GF_DATABASE_TYPE: postgres
+      GF_DATABASE_HOST: timescaledb:5432
+      GF_DATABASE_NAME: telemetry
+      GF_DATABASE_USER: telemetry
+      GF_DATABASE_PASSWORD: ${DB_PASSWORD}
     ports:
       - "3000:3000"
     volumes:
       - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
     depends_on:
       timescaledb:
         condition: service_healthy

@@ -1,0 +1,15 @@
+apiVersion: 1
+
+datasources:
+  - name: TimescaleDB
+    type: postgres
+    url: timescaledb:5432
+    database: telemetry
+    user: telemetry
+    password: telemetry_secure_pass_123 # Does not auto-populate password.
+    jsonData:
+      sslmode: "disable"
+      postgresVersion: 1500
+      timescaledb: true
+    isDefault: true
+    editable: true
