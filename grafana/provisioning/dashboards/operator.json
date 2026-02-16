@@ -1,0 +1,718 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TimescaleDB"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "green", "value": null},
+              {"color": "yellow", "value": 1},
+              {"color": "red", "value": 10}
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {"h": 4, "w": 4, "x": 0, "y": 0},
+      "id": 1,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.0",
+      "targets": [
+        {
+          "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT count(*) FROM machines WHERE status = 'active'",
+          "refId": "A"
+        }
+      ],
+      "title": "🟢 Machines Online",
+      "type": "stat"
+    },
+    {
+      "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "mappings": [],
+          "thresholds": {"mode": "absolute", "steps": [
+            {"color": "green", "value": null},
+            {"color": "red", "value": 1}
+          ]},
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {"h": 4, "w": 4, "x": 4, "y": 0},
+      "id": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.0",
+      "targets": [
+        {
+          "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT count(DISTINCT machine_id) FROM metrics WHERE time > now() - interval '5 minutes'",
+          "refId": "A"
+        }
+      ],
+      "title": "🔴 Machines Sending Data",
+      "type": "stat"
+    },
+    {
+      "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "mappings": [],
+          "thresholds": {"mode": "absolute", "steps": [
+            {"color": "green", "value": null},
+            {"color": "yellow", "value": 1},
+            {"color": "red", "value": 10}
+          ]},
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {"h": 4, "w": 4, "x": 8, "y": 0},
+      "id": 3,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.0",
+      "targets": [
+        {
+          "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT count(*) FROM alerts WHERE acknowledged = false",
+          "refId": "A"
+        }
+      ],
+      "title": "⚠️ Active Alerts",
+      "type": "stat"
+    },
+    {
+      "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "mappings": [],
+          "thresholds": {"mode": "absolute", "steps": [
+            {"color": "green", "value": null},
+            {"color": "yellow", "value": 50},
+            {"color": "red", "value": 100}
+          ]},
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {"h": 4, "w": 4, "x": 12, "y": 0},
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.0",
+      "targets": [
+        {
+          "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT count(*)::float / 60 FROM metrics WHERE time > now() - interval '1 minute'",
+          "refId": "A"
+        }
+      ],
+      "title": "📊 Metrics/sec",
+      "type": "stat"
+    },
+    {
+      "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "mappings": [],
+          "thresholds": {"mode": "absolute", "steps": [
+            {"color": "green", "value": null}
+          ]},
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {"h": 4, "w": 4, "x": 16, "y": 0},
+      "id": 5,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.0",
+      "targets": [
+        {
+          "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT count(*) FROM alert_rules WHERE enabled = true",
+          "refId": "A"
+        }
+      ],
+      "title": "📋 Active Rules",
+      "type": "stat"
+    },
+    {
+      "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "mappings": [],
+          "thresholds": {"mode": "absolute", "steps": [
+            {"color": "green", "value": null},
+            {"color": "yellow", "value": 60},
+            {"color": "red", "value": 80}
+          ]},
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {"h": 4, "w": 4, "x": 0, "y": 4},
+      "id": 101,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {"calcs": ["mean"], "fields": "", "values": false},
+        "textMode": "value_and_name"
+      },
+      "pluginVersion": "9.5.0",
+      "targets": [
+        {
+          "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT avg(value) FROM metrics WHERE metric_name = 'temperature' AND time > now() - interval '1 minute'",
+          "refId": "A"
+        }
+      ],
+      "title": "🌡️ Avg Temp",
+      "type": "stat"
+    },
+    {
+      "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "mappings": [],
+          "thresholds": {"mode": "absolute", "steps": [
+            {"color": "green", "value": null},
+            {"color": "yellow", "value": 6},
+            {"color": "red", "value": 8}
+          ]},
+          "unit": "mm/s"
+        },
+        "overrides": []
+      },
+      "gridPos": {"h": 4, "w": 4, "x": 4, "y": 4},
+      "id": 102,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {"calcs": ["mean"], "fields": "", "values": false},
+        "textMode": "value_and_name"
+      },
+      "pluginVersion": "9.5.0",
+      "targets": [
+        {
+          "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT avg(value) FROM metrics WHERE metric_name = 'vibration' AND time > now() - interval '1 minute'",
+          "refId": "A"
+        }
+      ],
+      "title": "📳 Avg Vibration",
+      "type": "stat"
+    },
+    {
+      "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "mappings": [],
+          "thresholds": {"mode": "absolute", "steps": [
+            {"color": "green", "value": null},
+            {"color": "yellow", "value": 4},
+            {"color": "red", "value": 5}
+          ]},
+          "unit": "bar"
+        },
+        "overrides": []
+      },
+      "gridPos": {"h": 4, "w": 4, "x": 8, "y": 4},
+      "id": 103,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {"calcs": ["mean"], "fields": "", "values": false},
+        "textMode": "value_and_name"
+      },
+      "pluginVersion": "9.5.0",
+      "targets": [
+        {
+          "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT avg(value) FROM metrics WHERE metric_name = 'pressure' AND time > now() - interval '1 minute'",
+          "refId": "A"
+        }
+      ],
+      "title": "⚖️ Avg Pressure",
+      "type": "stat"
+    },
+    {
+      "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "mappings": [],
+          "thresholds": {"mode": "absolute", "steps": [
+            {"color": "green", "value": null}
+          ]},
+          "unit": "rpm"
+        },
+        "overrides": []
+      },
+      "gridPos": {"h": 4, "w": 4, "x": 12, "y": 4},
+      "id": 104,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {"calcs": ["mean"], "fields": "", "values": false},
+        "textMode": "value_and_name"
+      },
+      "pluginVersion": "9.5.0",
+      "targets": [
+        {
+          "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT avg(value) FROM metrics WHERE metric_name = 'rpm' AND time > now() - interval '1 minute'",
+          "refId": "A"
+        }
+      ],
+      "title": "🔄 Avg RPM",
+      "type": "stat"
+    },
+    {
+      "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "opacity",
+            "hideFrom": {"tooltip": false, "viz": false, "legend": false},
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {"type": "linear"},
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {"group": "A", "mode": "none"},
+            "thresholdsStyle": {"mode": "line"}
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "green", "value": null},
+              {"color": "red", "value": 80}
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": [
+          {
+            "matcher": {"id": "byName", "options": "value"},
+            "properties": [
+              {"id": "thresholds", "value": {"mode": "absolute", "steps": [
+                {"color": "green", "value": null},
+                {"color": "yellow", "value": 60},
+                {"color": "red", "value": 80}
+              ]}}
+            ]
+          }
+        ]
+      },
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+      "id": 10,
+      "options": {
+        "legend": {"calcs": ["mean", "last"], "displayMode": "table", "placement": "bottom", "showLegend": true},
+        "tooltip": {"mode": "multi", "sort": "desc"}
+      },
+      "targets": [
+        {
+          "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  time_bucket('10 seconds', time) AS time,\n  avg(value) AS value\nFROM metrics\nWHERE $__timeFilter(time)\n  AND metric_name = 'temperature'\nGROUP BY time_bucket('10 seconds', time)\nORDER BY time",
+          "refId": "A"
+        }
+      ],
+      "title": "🌡️ Temperature",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "opacity",
+            "hideFrom": {"tooltip": false, "viz": false, "legend": false},
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {"type": "linear"},
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {"group": "A", "mode": "none"},
+            "thresholdsStyle": {"mode": "line"}
+          },
+          "mappings": [],
+          "thresholds": {"mode": "absolute", "steps": [
+            {"color": "green", "value": null},
+            {"color": "red", "value": 10}
+          ]},
+          "unit": "mm/s"
+        },
+        "overrides": []
+      },
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8},
+      "id": 11,
+      "options": {
+        "legend": {"calcs": ["mean", "last"], "displayMode": "table", "placement": "bottom", "showLegend": true},
+        "tooltip": {"mode": "multi", "sort": "desc"}
+      },
+      "targets": [
+        {
+          "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  time_bucket('10 seconds', time) AS time,\n  avg(value) AS value\nFROM metrics\nWHERE $__timeFilter(time)\n  AND metric_name = 'vibration'\nGROUP BY time_bucket('10 seconds', time)\nORDER BY time",
+          "refId": "A"
+        }
+      ],
+      "title": "📳 Vibration",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "opacity",
+            "hideFrom": {"tooltip": false, "viz": false, "legend": false},
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {"type": "linear"},
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {"group": "A", "mode": "none"},
+            "thresholdsStyle": {"mode": "line"}
+          },
+          "mappings": [],
+          "thresholds": {"mode": "absolute", "steps": [
+            {"color": "green", "value": null},
+            {"color": "red", "value": 5}
+          ]},
+          "unit": "bar"
+        },
+        "overrides": []
+      },
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16},
+      "id": 12,
+      "options": {
+        "legend": {"calcs": ["mean", "last"], "displayMode": "table", "placement": "bottom", "showLegend": true},
+        "tooltip": {"mode": "multi", "sort": "desc"}
+      },
+      "targets": [
+        {
+          "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  time_bucket('10 seconds', time) AS time,\n  avg(value) AS value\nFROM metrics\nWHERE $__timeFilter(time)\n  AND metric_name = 'pressure'\nGROUP BY time_bucket('10 seconds', time)\nORDER BY time",
+          "refId": "A"
+        }
+      ],
+      "title": "⚖️ Pressure",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "opacity",
+            "hideFrom": {"tooltip": false, "viz": false, "legend": false},
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {"type": "linear"},
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {"group": "A", "mode": "none"},
+            "thresholdsStyle": {"mode": "off"}
+          },
+          "mappings": [],
+          "thresholds": {"mode": "absolute", "steps": [
+            {"color": "green", "value": null}
+          ]},
+          "unit": "rpm"
+        },
+        "overrides": []
+      },
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 16},
+      "id": 13,
+      "options": {
+        "legend": {"calcs": ["mean", "last"], "displayMode": "table", "placement": "bottom", "showLegend": true},
+        "tooltip": {"mode": "multi", "sort": "desc"}
+      },
+      "targets": [
+        {
+          "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  time_bucket('10 seconds', time) AS time,\n  avg(value) AS value\nFROM metrics\nWHERE $__timeFilter(time)\n  AND metric_name = 'rpm'\nGROUP BY time_bucket('10 seconds', time)\nORDER BY time",
+          "refId": "A"
+        }
+      ],
+      "title": "🔄 RPM",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "mode": "gradient",
+              "type": "color-background"
+            },
+            "inspect": false
+          },
+          "mappings": [
+            {"options": {"false": {"color": "green", "index": 0}, "true": {"color": "gray", "index": 1}}, "type": "value"}
+          ],
+          "thresholds": {"mode": "absolute", "steps": [
+            {"color": "green", "value": null},
+            {"color": "red", "value": 1}
+          ]}
+        },
+        "overrides": [
+          {
+            "matcher": {"id": "byName", "options": "acknowledged"},
+            "properties": [
+              {"id": "custom.cellOptions", "value": {"mode": "auto", "type": "auto"}},
+              {"id": "mappings", "value": [{"options": {"false": {"color": "orange", "index": 0}, "true": {"color": "green", "index": 1}}, "type": "value"}]}
+            ]
+          },
+          {
+            "matcher": {"id": "byName", "options": "severity"},
+            "properties": [
+              {"id": "custom.cellOptions", "value": {"mode": "gradient", "type": "color-background"}},
+              {"id": "mappings", "value": [{"options": {"critical": {"color": "red", "index": 1}, "warning": {"color": "orange", "index": 0}}, "type": "value"}]}
+            ]
+          }
+        ]
+      },
+      "gridPos": {"h": 10, "w": 24, "x": 0, "y": 24},
+      "id": 20,
+      "options": {
+        "showHeader": true,
+        "sortBy": [{"desc": true, "display": "created_at"}]
+      },
+      "pluginVersion": "9.5.0",
+      "targets": [
+        {
+          "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \n  created_at as time,\n  (SELECT name FROM machines WHERE id = alerts.machine_id) as machine,\n  severity,\n  message,\n  acknowledged\nFROM alerts\nWHERE acknowledged = false\nORDER BY created_at DESC\nLIMIT 20",
+          "refId": "A"
+        }
+      ],
+      "title": "🚨 Unacknowledged Alerts",
+      "type": "table"
+    },
+    {
+      "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "custom": {
+            "align": "auto",
+            "cellOptions": {"type": "auto"},
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {"mode": "absolute", "steps": [
+            {"color": "green", "value": null}
+          ]}
+        },
+        "overrides": []
+      },
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 34},
+      "id": 30,
+      "options": {"showHeader": true},
+      "pluginVersion": "9.5.0",
+      "targets": [
+        {
+          "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \n  m.name as machine,\n  max(case when mt.metric_name = 'temperature' then mt.value end) as temp,\n  max(case when mt.metric_name = 'pressure' then mt.value end) as pressure,\n  max(case when mt.metric_name = 'vibration' then mt.value end) as vibration,\n  max(case when mt.metric_name = 'rpm' then mt.value end) as rpm\nFROM machines m\nLEFT JOIN metrics mt ON mt.machine_id = m.id AND mt.time > now() - interval '1 minute'\nWHERE m.status = 'active'\nGROUP BY m.name\nORDER BY m.name",
+          "refId": "A"
+        }
+      ],
+      "title": "📋 Machine Status Overview",
+      "type": "table"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": ["telemetry", "operator"],
+  "templating": {
+    "list": [
+      {
+        "current": {"text": "All Machines", "value": ""},
+        "datasource": {"type": "postgres", "uid": "TimescaleDB"},
+        "definition": "SELECT name || ' - ' || id::text FROM machines ORDER BY name",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Machine",
+        "multi": false,
+        "name": "machine",
+        "options": [],
+        "query": {"query": "SELECT name || ' - ' || id::text FROM machines ORDER BY name", "refId": "StandardVariableQuery"},
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {"from": "now-15m", "to": "now"},
+  "timepicker": {
+    "refresh_intervals": ["5s", "10s", "30s", "1m", "5m"]
+  },
+  "timezone": "",
+  "title": "Operator Dashboard",
+  "uid": "operator-dashboard",
+  "version": 1,
+  "weekStart": ""
+}

@@ -47,6 +47,7 @@ services:
     container_name: telemetry-app
     ports:
       - "8083:8083"
+      - "1883:1883"
     environment:
       DB_HOST: timescaledb
       DB_PASSWORD: ${DB_PASSWORD}
