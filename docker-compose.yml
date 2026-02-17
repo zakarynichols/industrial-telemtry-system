@@ -75,8 +75,8 @@ services:
     container_name: telemetry-simulator
     environment:
       API_URL: http://telemetry:8083
-      MACHINE_COUNT: ${MACHINE_COUNT:-10}
-      METRICS_PER_SECOND: ${METRICS_PER_SECOND:-100}
+      MACHINE_COUNT: ${MACHINE_COUNT:-3}
+      METRICS_PER_SECOND: ${METRICS_PER_SECOND:-10}
     depends_on:
       telemetry:
         condition: service_started
