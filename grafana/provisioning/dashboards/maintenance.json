@@ -100,11 +100,11 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT count(*) FROM alerts WHERE acknowledged = false AND severity = 'critical'",
+          "rawSql": "SELECT count(*) FROM alerts WHERE acknowledged = false AND severity = 'critical' AND created_at > now() - interval '1 hour'",
           "refId": "A"
         }
       ],
-      "title": "CRITICAL Alerts",
+      "title": "CRITICAL Alerts (1h)",
       "type": "stat"
     },
     {
@@ -173,11 +173,11 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT count(*) FROM alerts WHERE acknowledged = false AND severity = 'warning'",
+          "rawSql": "SELECT count(*) FROM alerts WHERE acknowledged = false AND severity = 'warning' AND created_at > now() - interval '1 hour'",
           "refId": "A"
         }
       ],
-      "title": "WARNING Alerts",
+      "title": "WARNING Alerts (1h)",
       "type": "stat"
     },
     {
